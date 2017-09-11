@@ -1,4 +1,4 @@
-@extends('admin.template.layout')
+@extends('template.layout')
 
 @section('header-scripts')
   <link rel="stylesheet" href="/bower_components/AdminLTE/plugins/iCheck/flat/purple.css">

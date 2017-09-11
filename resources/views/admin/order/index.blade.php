@@ -30,7 +30,9 @@
           <th style="width: 140px">Status</th>          
           <th style="width: 100px">Aksi</th>
         </tr>
-        @if (count($orders) > 0)
+        @if (count($orders) == 0)
+          Belum ada data
+        @else
           @foreach ($orders as $order)
             <tr>
               <td class="icheck">
@@ -76,8 +78,6 @@
               </td>
             </tr>
           @endforeach
-        @else
-          Gak ada data
         @endif
       </table>
     </div>

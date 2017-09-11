@@ -31,6 +31,7 @@ return array(
     */
     
     'paths' => array(
+        public_path('assets'),
         public_path('assets/products'),
         public_path('assets/profiles'),
     ),

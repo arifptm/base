@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Order;
 use Flash;
 use Auth;
-use Excel;
 use PDF;
 use App\Lineitem;
 use App\Product;

@@ -13,7 +13,7 @@
   @include('flash::message')
   <h1>
     Daftar Barang
-    <a href="/manage/products/create"><i class="fa fa-plus-circle"></i></a>
+    <!-- <a href="/manage/products/create"><i class="fa fa-plus-circle"></i></a> -->
   </h1>
 @endsection
 
@@ -34,7 +34,7 @@
           <th style="width: 64px">Action</th>
         </tr>
         @if (count($products) == 0)
-          Gak ada data
+          Belum ada data
         @endif
 
           @foreach ($products as $product)

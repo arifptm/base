@@ -18,8 +18,11 @@
 					</div>
 				</div>
 			</div>
-
+			@if (\Request::route()->getName() == 'edit.product')
 			<div id="leftpanel" @if( $product->verified != 1) class="hidden"  @endif>
+			@else
+			<div id="leftpanel" class="hidden" >				
+			@endif
 				<div class="form-group">
 					<div class="row">
 						@if (\Request::route()->getName() == 'edit.product' )
@@ -72,7 +75,11 @@
 					
 		</div>
 		<div class="col-md-6">	
+			@if (\Request::route()->getName() == 'edit.product')
 			<div id="rightpanel"  @if( $product->verified != 1) class="hidden"  @endif>
+			@else
+			<div id="leftpanel" class="hidden" >
+			@endif
 				<div class="form-group">  
 				    <div class="icheck">
 				        {!! Form::checkbox('disposable') !!} 

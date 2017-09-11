@@ -19,7 +19,7 @@
 
 @section('content-main')
   <div class="row">
-    @if ($suggestions->count()) <div class="col-md-8"> @else <div class="col-md-12"> @endif
+    @if ($suggestions) <div class="col-md-8"> @else <div class="col-md-12"> @endif
       <div class="box">    
       <div class="box-header with-border">
         <h3 class="box-title">Usulan : <b>{{ Auth::user()->name }}</b></h3>

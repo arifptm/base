@@ -103,9 +103,7 @@
               <th>Nama user</th>
               <th>Status</th>
             </tr>
-            @if (count($all_orders) == 0)
-              Gak ada data
-            @else
+            @if (count($all_orders) > 0)
               @foreach ($all_orders as $all_order)
                 <tr>
                   <td>
