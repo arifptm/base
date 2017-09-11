@@ -28,10 +28,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function socialLogin(){
-        return $this->hasOne('App\SocialLogin');
-    }
     
     public function userProfile(){
         return $this->hasOne('App\UserProfile');

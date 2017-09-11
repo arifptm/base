@@ -7,7 +7,7 @@
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    <a href="/">My<b> Application</b></a>
+    <a href="/">Logistik <b>TEDi</b></a>
   </div>
   <div class="login-box-body">
     <p class="lead login-box-msg">Setel ulang Password</p>

@@ -11,6 +11,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Jobs\SendUserVerificationEmail;
 
+use Bouncer;
+use App\UserProfile;
+
 class RegisterController extends Controller
 {
     /*
@@ -55,6 +58,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            
         ]);
     }
 
@@ -66,12 +70,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $new_user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'verification_token' => base64_encode($data['email']),
         ]);
+
+        UserProfile::create(['image'=> 'default.jpg', 'user_id' => $new_user->id]);
+
+        Bouncer::assign('user')->to($new_user);
+
+        return $new_user;
+
     }
 
     /**

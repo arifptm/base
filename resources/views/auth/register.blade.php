@@ -1,13 +1,13 @@
 @extends('auth.template')
 
 @section('page-title')
-  Register Page
+  Logistik TEDi
 @endsection
 
 @section('content')
 <div class="register-box">
   <div class="register-logo">
-    <a href="/">My<b> Application</b></a>
+   <a href="/">Logistik <b>TEDi</b></a>
   </div>
 
   <div class="register-box-body">
@@ -49,7 +49,7 @@
       <div class="form-group has-feedback">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Saya setuju dengan <a href="#">Syarat &amp; Ketentuan</a>
+              <input type="checkbox" name="tos" required> Saya setuju dengan <a href="#">Syarat &amp; Ketentuan</a>
             </label>
           </div>
       </div>
@@ -58,14 +58,6 @@
         <button type="submit" class="btn btn-primary btn-block btn-flat">Daftar</button>        
       </div>
     </form>
-
-    <div class="social-auth-links text-center">
-      <p>- ATAU -</p>
-      <a href="/login/facebook" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Daftar menggunakan
-        Facebook</a>
-      <a href="/login/google" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Daftar menggunakan
-        Google+</a>
-    </div>
     
   </div>
 </div>

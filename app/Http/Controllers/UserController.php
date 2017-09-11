@@ -6,54 +6,67 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 
+use Illuminate\Auth\Events\Registered;
+use App\Jobs\SendUserVerificationEmail;
+
+use Flash;
+use Bouncer;
+use App\UserProfile;
+use App\Order;
+use App\Product;
+
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function __construct()
     {
-        $users = User::paginate(20);
+        $this->middleware('can:manage-users',['except'=>[]]);
+    }
+
+    public function assignRole(){
+        return view('admin.user.assign_role');
+    }
+
+    public function storeRole(){
+        
+        //Bouncer::allow($user)->to('manage', User::class);
+        return redirect('/manage/users');
+    }
+
+
+    public function index(){
+        $users = User::whereIsNot('super')->orderBy('id', 'desc')->paginate(20);
         return view('admin.user.index',['users'=>$users]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function create(){
+        return view('admin.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $input = $request->all();
+        $input['password'] = bcrypt(str_random(8));
+        $input['verification_token'] = base64_encode($request->email);
+        event(new Registered($user = User::create($input)));
+        
+        dispatch(new SendUserVerificationEmail($user));
+
+
+        //User::save($input);
+
+
+        UserProfile::create(['image'=> 'default.jpg', 'user_id' => $user->id]);
+        Bouncer::assign('user')->to($user);
+
+        Flash::success('User baru berhasil ditambahkan');
+        return redirect('manage/users');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $owner = Auth::user();
-        $nid = $_GET['id'];
-        $owner->unreadNotifications->where('id',$nid)->markAsRead();
-
+    public function show($id){      
         $user = User::findOrFail($id);
-        return view('admin.user.show', ['user'=>$user]);
+        $product = Product::whereUserId($user->id);
+        $order = Order::whereUserId($user->id);
+        return view('admin.user.show', ['user'=>$user, 'product'=>$product, 'order'=>$order]);
     }
 
     /**
@@ -68,31 +81,54 @@ class UserController extends Controller
         return view('admin.user.edit',['user'=>$user]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+
+    public function update(Request $request, $id){
         $user = User::findOrFail($id);
         $input = $request->all();
-
         $user -> update($input);
-        flash('Data berhasil di-update...')->overlay();
+        
+        if ($request->hasFile('image')) {
+            $profile = new UserProfile;
+            $profile['image'] = $this->upload($request);
+            
+            $user->userProfile->update(['image'=>$profile['image']]);
+        }        
+
+        Flash::success('Data berhasil di-update...');
         return redirect('/manage/users');
     }
 
-    /**
-     * Remove the specified resource from storage.
+    public function destroy($id){
+        $user = User::findOrFail($id);
+        $product = Product::whereUserId($user->id);
+        $order = Order::whereUserId($user->id);
+
+        if ($product->count() OR $order->count()){
+            Flash::success("$user->name tidak bisa dihapus karena sudah mempunyai usulan/permintaan");            
+            return redirect()->back();
+        }
+        $user->delete();
+        Flash::success("$user->name telah dihapus");
+        return redirect()->back();
+    }
+
+
+    /* PUBLIC
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+     * Misc Method
+     *
+     */ 
+    public function upload(Request $request){    
+        if($request->file('image')->isValid()) {
+            try {
+                $file = $request->file('image');
+                $name = time() . '.' . $file->guessClientExtension();
+                $request->file('image')->move("assets/profiles/", $name);
+                return $name;
+
+            } catch (Illuminate\Filesystem\FileNotFoundException $e) {
+
+            }
+        }
     }
 }

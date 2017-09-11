@@ -1,4 +1,4 @@
-@extends('admin.template.layout')
+@extends('template.layout')
 
 @section('header-scripts')
   <link rel="stylesheet" href="/bower_components/AdminLTE/plugins/iCheck/flat/purple.css">
@@ -20,7 +20,7 @@
 
 @section('content-main')
 <div class="box box-primary">
-    {!! Form::model($user, ['action'=> ['UserController@update', $user->id], 'method'=>'patch', 'role' => 'form']) !!}
+    {!! Form::model($user, ['action'=> ['UserController@update', $user->id], 'method'=>'patch','files'=> true, 'role' => 'form']) !!}
         @include('admin.user.fields')  
     {!! Form::close() !!}
 </div>

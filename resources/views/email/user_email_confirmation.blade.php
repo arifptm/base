@@ -1,2 +1,3 @@
-<h1>Click the Link To Verify Your Email</h1>
-Click the following link to verify your email {{url('/verifyemail/'.$verification_token)}}
+<h1>Logistik TEDi</h1>
+<h3>Silakan klik link berikut untuk konfirmasi</h3>
+<p>Link konfirmasi pendaftaran anda:  {{url('/verifyemail/'.$verification_token)}}</p>

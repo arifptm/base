@@ -1,13 +1,13 @@
 @extends('auth.template')
 
 @section('page-title')
-Login Scraper
+Logistik TEDi
 @endsection
 
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    <a href="/">My<b> Application</b></a>
+    <a href="/">Logistik <b>TEDi</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -46,16 +46,11 @@ Login Scraper
         <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>        
       </div>
     </form>
-      <div class="social-auth-links text-center">
-      <p>- ATAU -</p>
-      <a href="/login/facebook" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Login menggunakan
-        Facebook</a>
-      <a href="/login/google" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Login menggunakan
-        Google+</a>
-    </div>
 
     <div class="form-group">
-      <a href="{{route('password.request')}}">Lupa password <i class="fa fa-question-circle"></i></a>
+      <p><a href="{{route('password.request')}}">Lupa password <i class="fa fa-question-circle"></i></a></p>
+
+      <p><a href="{{route('register')}}">Belum punya akun <i class="fa fa-question-circle"></i> daftar di sini </a></p>
     </div>    
 
   </div>

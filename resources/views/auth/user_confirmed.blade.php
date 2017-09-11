@@ -1,15 +1,19 @@
-@extends('layouts.app')
+@extends('auth.template')
+
+@section('page-title')
+Logistik TEDi
+@endsection
+
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Registration Confirmed</div>
-				<div class="panel-body">
-					Your Email is successfully verified. Click here to <a href="{{url('/login')}}">login</a>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="login-box">
+  <div class="login-logo">
+    <a href="/">Logistik <b>TEDi</b></a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg lead">Pendaftaran telah disetujui</p>
+    <p class="text-center">Silakan klik tombol berikut untuk login</p>
+     <a href="{{url('/login')}}" class="btn btn-block btn-primary btn-lg">Login</a>
+  </div>
 </div>
 @endsection

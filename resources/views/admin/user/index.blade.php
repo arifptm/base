@@ -1,4 +1,4 @@
-@extends('admin.template.layout')
+@extends('template.layout')
 
 @section('header-scripts')
   <link rel="stylesheet" href="/bower_components/AdminLTE/plugins/iCheck/flat/purple.css">
@@ -11,9 +11,11 @@
 
 @section('content-top')
   @include('flash::message')
-  <h1>
-    Users
-    <small>All Users</small>
+  <h1>Users 
+  @can('manage-roles')
+    <a href="/manage/roles/create-user-role" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Role</a>
+  @endcan
+  <a href="/manage/users/create" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Tambah User</a>
   </h1>
 @endsection
 
@@ -28,6 +30,9 @@
           <th>Name</th>
           <th>Email</th>
           <th>Roles</th>
+          @can('manage-roles')
+            <th>Abilities</th>
+          @endcan
           <th>Status</th>
           <th style="width: 64px">Action</th>
         </tr>
@@ -44,7 +49,7 @@
               	<a href="/manage/users/{{$user->id}}"><img src="/assets/profiles/{{ $user->userProfile->image }}" alt="" height="30" /></a>
               </td>
               <td>
-              	{{ $user->name }}
+              	<a href="/manage/users/{{$user->id}}">{{ $user->name }}</a>
               </td>
               <td>
                 {{ $user->email }}
@@ -56,8 +61,15 @@
                   @endforeach
                 </ul>
               </td>
+              @can('manage-roles')
               <td>
-                @if ($user->verified == 1) <span class="badge bg-blue">Verified</span> @else <span class="badge bg-yellow">Pending</span>  @endif
+                @foreach($user->getAbilities() as $able)
+                  {{ $able->name }} {{ $able->entity_type }}<br>
+                @endforeach
+              </td>            
+              @endcan 
+              <td>
+                @if ($user->verified == 1) <span class="label bg-green">Verified</span> @else <span class="label bg-orange">Pending</span>  @endif
               </td>
               <td>
                 {!! Form::open(['url' => '/manage/users/'.$user->id, 'method' => 'delete']) !!}
